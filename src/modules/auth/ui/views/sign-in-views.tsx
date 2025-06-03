@@ -11,6 +11,7 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+import {FaGoogle,FaGithub} from "react-icons/fa"
 import { Input } from "@/components/ui/input";
 import { Alert, AlertTitle } from "@/components/ui/alert";
 import { OctagonAlertIcon } from "lucide-react";
@@ -29,10 +30,9 @@ const formSchema = z.object({
     .min(6, { message: "Password must be at least 6 characters" }),
 });
 export const SignInViews = () => {
-    const router = useRouter();
     const [error,setError] = useState<string | null>(null);
     const [pending,setPending] = useState<boolean>(false);
-
+const router = useRouter();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -47,6 +47,7 @@ export const SignInViews = () => {
         {
             email:data.email,
             password:data.password,
+            callbackURL:"/"
         },
         {
             onSuccess:()=>{
@@ -58,6 +59,25 @@ export const SignInViews = () => {
             }
         }
     )
+  };
+
+  const onSocial = async (provider: "github" | "google") => {
+    setPending(true);
+    setError(null);
+    authClient.signIn.social(
+      {
+        provider : provider,
+        callbackURL : "/"
+      },
+      {
+        onSuccess: () => {
+          setPending(false);
+        },
+        onError: ({ error }) => {
+          setError(error.message);
+        },
+      }
+    );
   };
 
   return (
@@ -124,8 +144,8 @@ export const SignInViews = () => {
                     <span className="bg-card text-muted-foreground relative z-10 px-2 ">Or Continue with</span>
                 </div>
                 <div className="grid grid-cols-2 gap-4 c">
-                    <Button variant="outline" type="button" className="cursor-pointer">Google</Button>
-                    <Button variant="outline" type="button" className=" cursor-pointer">Github</Button>
+                    <Button variant="outline" onClick={()=>onSocial("google")} type="button" className="cursor-pointer" ><FaGoogle/></Button>
+                    <Button variant="outline" onClick={()=>onSocial("github")} type="button" className=" cursor-pointer"><FaGithub/></Button>
 
                 </div>
                 <div>

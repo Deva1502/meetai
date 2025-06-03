@@ -11,6 +11,7 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+import {FaGoogle,FaGithub} from "react-icons/fa"
 import { Input } from "@/components/ui/input";
 import { Alert, AlertTitle } from "@/components/ui/alert";
 import { OctagonAlertIcon } from "lucide-react";
@@ -59,7 +60,26 @@ export const SignUpViews = () => {
       {
         onSuccess: () => {
           setPending(false);
-          router.push("/");
+          router.push("/auth/sign-in");
+        },
+        onError: ({ error }) => {
+          setError(error.message);
+        },
+      }
+    );
+  };
+
+  const onSocial = async (provider: "github" | "google") => {
+    setPending(true);
+    setError(null);
+    authClient.signIn.social(
+      {
+        provider : provider,
+        callbackURL : "/"
+      },
+      {
+        onSuccess: () => {
+          setPending(false);
         },
         onError: ({ error }) => {
           setError(error.message);
@@ -179,15 +199,16 @@ export const SignUpViews = () => {
                     variant="outline"
                     type="button"
                     className="cursor-pointer"
+                    onClick={()=>onSocial("google")}
                   >
-                    Google
+                    <FaGoogle/>
                   </Button>
                   <Button
-                    variant="outline"
+                    variant="outline" onClick={()=>onSocial("github")}
                     type="button"
                     className=" cursor-pointer"
                   >
-                    Github
+                    <FaGithub/>
                   </Button>
                 </div>
                 <div>
