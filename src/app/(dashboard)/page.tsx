@@ -11,7 +11,6 @@ const page = async() => {
   if(!session)redirect("/auth/sign-in");
   return (
     <div>
-
       <HomeView/>
     </div>
   )
