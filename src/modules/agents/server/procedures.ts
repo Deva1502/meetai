@@ -3,7 +3,7 @@ import { agents } from "@/db/schema";
 import { baseProcedure, createTRPCRouter, protectedProcedure } from "@/trpc/init";
 import { agentInsertSchema } from "../schema";
 import { z } from "zod";
-import {eq} from "drizzle-orm"
+import {eq, getTableColumns, sql} from "drizzle-orm"
 
  export const agentsRouter = createTRPCRouter({
 
@@ -12,14 +12,20 @@ import {eq} from "drizzle-orm"
    // Define your procedures here
    getOne : protectedProcedure.input(z.object({id:z.string()})).query(async({input})=>{
     const [existingAgents] = await db
-    .select()
+    .select({
+      meetingCount:sql<number>`5`,
+      ...getTableColumns(agents),
+    })
     .from(agents)
     .where(eq(agents.id, input.id));
     return existingAgents;
    }),
    getMany : protectedProcedure.query(async()=>{
     const data = await db
-    .select()
+    .select({
+      meetingCount:sql<number>`5`,
+      ...getTableColumns(agents),
+    })
     .from(agents);
     return data;
    }),
