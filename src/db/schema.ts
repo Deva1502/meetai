@@ -78,14 +78,14 @@ export const agents = pgTable("agents", {
   updatedAt: timestamp("updated_at").notNull().defaultNow(),
 })
 
-export const MeetingStatus = pgEnum("meeeting_status",[
-  "pending",
+export const MeetingStatus = pgEnum("meeting_status",[
+  "active",
   "completed",
   "cancelled",
   "processing",
   "upcoming",
 ]);
-export const meetings = pgTable("mettings", {
+export const meetings = pgTable("meetings", {
    id: text("id")
     .primaryKey()
     .$defaultFn(() => nanoid()),
@@ -98,11 +98,11 @@ export const meetings = pgTable("mettings", {
     .references(() => agents.id,{ onDelete: "cascade" }),
   status: MeetingStatus("status").notNull().default("upcoming"),
   // instructions: text("instructions").notNull(),
-  startedAt: timestamp("created_at"),
+  startedAt: timestamp("started_at"),
   endedAt: timestamp("ended_at"),
   transcriptUrl: text("transcript_url"),
   recordingUrl: text("recording_url"),
   summary: text("summary"),
-  createdAt: timestamp("started_at").notNull().defaultNow(),
+  createdAt: timestamp("created_at").notNull().defaultNow(),
   updatedAt: timestamp("updated_at").notNull().defaultNow(),
 })

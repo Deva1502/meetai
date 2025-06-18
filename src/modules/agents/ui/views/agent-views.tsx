@@ -4,12 +4,13 @@ import { LoadingState } from "@/components/loadiing-state";
 import { useTRPC } from "@/trpc/client";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import React from "react";
-import { DataTable } from "../components/data-table";
+// import { DataTable } from "../components/data-table";
 import { columns } from "../components/columns";
 import { EmptyState } from "@/components/empty-state";
 import { useAgentFilter } from "../../hooks/use-agents-filter";
 import { DataPagination } from "../components/data-pagination";
 import { useRouter } from "next/navigation";
+import { DataTable } from "@/components/data-table";
 
 const AgentView = () => {
   const router = useRouter();

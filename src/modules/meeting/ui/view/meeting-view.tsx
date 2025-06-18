@@ -1,20 +1,29 @@
-"use client"
+"use client";
 
+import { DataTable } from "@/components/data-table";
 import { ErrorState } from "@/components/error-state";
 import { LoadingState } from "@/components/loadiing-state";
-import { useTRPC } from "@/trpc/client"
-import {  useSuspenseQuery } from "@tanstack/react-query";
+import { useTRPC } from "@/trpc/client";
+import { useSuspenseQuery } from "@tanstack/react-query";
+import { columns } from "../components/columns";
+import { EmptyState } from "@/components/empty-state";
 
 export const MeetingView = () => {
-    const trpc = useTRPC();
-    const {data} = useSuspenseQuery(trpc.meetings.getMany.queryOptions({}))
-    return (
-        <div>
-            {/* {JSON.stringify(data?.items)} */}
-            Todo : Data table
-        </div>
-    )
-}
+  const trpc = useTRPC();
+  const { data } = useSuspenseQuery(trpc.meetings.getMany.queryOptions({}));
+  return (
+    <div className="flex-1 pb-4 px-4 md:px-8 flex flex-col gap-y-4">
+      {/* {JSON.stringify(data?.items)} */}
+      <DataTable data={data.items} columns={columns} />
+      {data.items.length === 0 && (
+        <EmptyState
+          title="Create your first Meeting"
+          description="Meetings will appear here once created."
+        />
+      )}
+    </div>
+  );
+};
 export const MeetingViewLoading = () => {
   return (
     <LoadingState
@@ -32,4 +41,3 @@ export const MeetingViewError = () => {
     />
   );
 };
-

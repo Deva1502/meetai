@@ -22,7 +22,7 @@ export const NewMeetingDialog = ({ open, onOpenChange }: NewMeetingDialogProps) 
       <MeetingForm onSuccess={(id)=>{
         onOpenChange(false);
         router.push(`/meetings/${id}`);
-      }} onCancel={()=>onOpenChange}/>
+      }} onCancel={()=>onOpenChange(false)}/>
     </ResponsiveDialog>
   );
 };
