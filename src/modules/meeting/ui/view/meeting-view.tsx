@@ -10,7 +10,8 @@ export const MeetingView = () => {
     const {data} = useSuspenseQuery(trpc.meetings.getMany.queryOptions({}))
     return (
         <div>
-            {JSON.stringify(data?.items)}
+            {/* {JSON.stringify(data?.items)} */}
+            Todo : Data table
         </div>
     )
 }
